@@ -1,87 +1,48 @@
-import 'dart:math';
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materi OOP: Konsep Kelas Abstrak</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f9f9f9; }
+        .card { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #2980b9; }
+        code { background: #eee; padding: 2px 5px; border-radius: 4px; font-family: monospace; }
+        .highlight { background: #e8f4fd; padding: 15px; border-left: 5px solid #3498db; }
+    </style>
+</head>
+<body>
 
-// --- BAGIAN 1, 2, 3: Polimorfisme & Abstract Class ---
+    <div class="card">
+        <h1>Apa itu Kelas Abstrak?</h1>
+        <p>Kelas abstrak adalah kelas yang <strong>tidak dapat diinstansiasi</strong> (tidak bisa dibuat objeknya secara langsung). Kelas ini berfungsi sebagai "cetak biru" atau kerangka bagi kelas-kelas turunannya.</p>
+        
+        <div class="highlight">
+            <h2>Konsep Utama:</h2>
+            <ul>
+                <li><strong>Abstract Method:</strong> Metode yang tidak memiliki isi (body) dan harus diimplementasikan oleh kelas turunan.</li>
+                <li><strong>Non-Abstract Method:</strong> Metode yang memiliki isi standar yang bisa diwariskan langsung.</li>
+                <li><strong>Tujuan:</strong> Menjamin konsistensi perilaku di antara kelas-kelas yang berbeda (seperti kelas <code>Pekerja</code> yang pasti memiliki perilaku <code>bekerja()</code>).</li>
+            </ul>
+        </div>
+    </div>
 
-abstract class Pekerja {
-  String nama;
-  Pekerja(this.nama);
+    <div class="card">
+        <h2>Demo Kode Interaktif</h2>
+        <p>Anda bisa mencoba dan mengubah kode Dart di bawah ini untuk melihat bagaimana kelas <code>Pekerja</code> (abstrak) diturunkan ke kelas <code>Programmer</code> dan <code>Dokter</code>.</p>
+        
+        <iframe 
+            src="https://dartpad.dev/?id=5c0e154dd50af4a9ac856908061291bcid=//gist.github.com/5c0e154dd50af4a9ac856908061291bc
+            style="width:100%; height:450px; border:1px solid #ccc; border-radius: 8px;">
+        </iframe>
+    </div>
 
-  // Method abstract
-  void bekerja();
+    <div class="card">
+        <h2>Kesimpulan untuk Resume</h2>
+        <p>Dengan menggunakan kelas abstrak, kode Anda menjadi lebih <strong>modular</strong>, <strong>mudah dikelola</strong>, dan mengikuti prinsip <strong>Open-Closed Principle</strong> (terbuka untuk ekstensi, namun tertutup untuk modifikasi langsung pada kerangka utama).</p>
+    </div>
 
-  // Method non-abstract
-  void info() => print("Nama pekerja: $nama");
-}
-
-class Programmer extends Pekerja {
-  Programmer(String nama) : super(nama);
-  @override
-  void bekerja() => print("$nama sedang menulis kode.");
-}
-
-class Dokter extends Pekerja {
-  Dokter(String nama) : super(nama);
-  @override
-  void bekerja() => print("$nama sedang memeriksa pasien.");
-}
-
-class Guru extends Pekerja {
-  Guru(String nama) : super(nama);
-  @override
-  void bekerja() => print("$nama sedang mengajar di kelas.");
-}
-
-// --- BAGIAN 4: Pewarisan/Mixins (Interface) ---
-// Dart menggunakan 'implements' untuk simulasi multiple inheritance
-class Komputer { void boot() => print("Komputer menyala"); }
-class Kamera { void ambilFoto() => print("Kamera mengambil foto"); }
-class Telepon { void panggil() => print("Telepon berdering"); }
-
-class Tablet implements Komputer, Kamera, Telepon {
-  @override void boot() => print("Tablet booting...");
-  @override void ambilFoto() => print("Tablet mengambil foto...");
-  @override void panggil() => print("Tablet melakukan panggilan...");
-}
-
-// --- BAGIAN 5: MathUtils (Static Methods) ---
-class MathUtils {
-  static int factorial(int n) => n <= 1 ? 1 : n * factorial(n - 1);
-  
-  static bool isPrime(int n) {
-    if (n < 2) return false;
-    for (int i = 2; i <= sqrt(n); i++) if (n % i == 0) return false;
-    return true;
-  }
-
-  static double roundDouble(double val, int places) => 
-      double.parse(val.toStringAsFixed(places));
-
-  static int randomInt(int min, int max) => Random().nextInt(max - min + 1) + min;
-
-  static double rataRata(List<num> angka) => 
-      angka.reduce((a, b) => a + b) / angka.length;
-
-  static double median(List<num> angka) {
-    angka.sort();
-    int mid = angka.length ~/ 2;
-    return angka.length.isOdd ? angka[mid].toDouble() : (angka[mid - 1] + angka[mid]) / 2;
-  }
-}
-
-void main() {
-  // Demo Polimorfisme
-  List<Pekerja> daftarPekerja = [Programmer("Budi"), Dokter("Siti"), Guru("Andi")];
-  for (var p in daftarPekerja) {
-    p.info();
-    p.bekerja();
-  }
-
-  // Demo Tablet
-  Tablet tablet = Tablet();
-  tablet.boot();
-
-  // Demo MathUtils
-  print("Faktorial 5: ${MathUtils.factorial(5)}");
-  print("Apakah 7 prima?: ${MathUtils.isPrime(7)}");
-  print("Rata-rata [10, 20, 30]: ${MathUtils.rataRata([10, 20, 30])}");
-}
+</body>
+</html>
